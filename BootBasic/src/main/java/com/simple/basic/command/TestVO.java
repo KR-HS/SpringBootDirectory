@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 //@Setter
 //@ToString
 @Data // getter + setter + toString를 합침
+@Builder
 public class TestVO {
 
     // 단축키 alt + insert

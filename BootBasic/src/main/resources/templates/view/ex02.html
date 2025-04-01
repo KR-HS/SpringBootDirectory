@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h3>타임리프 반복문</h3>
+    [[${list}]]
+
+    <ul>
+        <li th:each="vo:${list}" >
+            [[${vo.id}]]
+            [[${vo.name}]]
+            [[${vo.salary}]]
+
+        </li>
+    </ul>
+
+    <!--  두번째 변수는 상태값을 저장해줌  -->
+    <ul>
+        <li th:each="vo,status :${list}">
+            [[${status}]]<br>
+            [[${vo}]]
+        </li>
+    </ul>
+
+    <hr>
+    <!--  반복문과 조건문  -->
+    <ul>
+        <li th:each="vo:${list}" th:if="${vo.salary}>=3005">
+            [[${vo}]]
+        </li>
+    </ul>
+
+    <hr>
+    <ul>
+        <li th:each="vo,status:${list}">
+            <span th:if="${status.count%2==0}">[[${vo}]]</span>
+            <span th:unless="${status.count%2==0}">홀수</span>
+        </li>
+    </ul>
+</body>
+</html>

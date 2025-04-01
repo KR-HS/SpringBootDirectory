@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/include/layout03 :: 함수(~{ :: .box})}">
+    <div id="wrap1">
+        아이디선택자 #
+    </div>
+
+    <div class="box">
+        클래스 선택자 .
+    </div>
+</th:block>
+<!-- 이 페이지에서 인식되야 하는 코드 같은 경우 block태그 밖에 선언-->
+<script>
+    console.log(1);
+</script>

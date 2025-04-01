@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h3>ex04페이지</h3>
+    [[${vo}]]
+
+    <!--
+      자바스크립트에서 객체를 받아쓸떄 JSON형식으로 변환
+      -->
+    <script th:inline="javascript">
+        var item = `[[${vo}]]`;
+        var vo = JSON.parse(item);
+        console.log(vo.name);
+    </script>
+
+    <hr>
+
+    <h3>타임리프의 다양한 사용법</h3>
+    [[${#strings.substring(vo.name,1,2)}]]
+    <br>
+    [[${#temporals.format(vo.hiredate,'yyyy-MM-dd hh시 mm분 ss초')}]]
+
+</body>
+</html>
