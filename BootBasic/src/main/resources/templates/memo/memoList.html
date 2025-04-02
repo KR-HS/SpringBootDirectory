@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<h3>메모 목록</h3>
+	
+		<table>
+			<tr>
+				<td>번호</td>
+				<td>메모</td>
+				<td>연락처</td>
+				<td>공개여부</td>
+			</tr>
+						
+			<th:block th:each="vo,status:${list}">
+				<tr>
+					<td th:text="${status.count}"></td>
+					<td th:if="${vo.secret=='n'}">비밀글입니다</td>
+					<td th:unless="${vo.secret=='n'}" th:text="${vo.memo}"></td>
+					<td th:text="${vo.phone}"></td>
+					<td th:text="${vo.secret}"></td>
+				</tr>
+			</th:block>
+	</table>
+	
+	<a href="memoWrite">메모쓰기</a>
+</body>
+</html>

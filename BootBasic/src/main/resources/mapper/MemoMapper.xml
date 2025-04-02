@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.simple.basic.memo.mapper.MemoMapper">
+    <select id="getTime" resultType="string">
+        select now()
+    </select>
+
+    <insert id="insert" parameterType="MemoVO">
+        insert into memo(memo,phone,pw,secret)
+            values(#{memo},#{phone},#{pw},#{secret})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        delete from memo where mno=#{mno}
+    </delete>
+
+    <update id="update" parameterType="MemoVO">
+        update memo
+        set memo = #{memo}, phone=#{phone}, pw=#{pw}, secret=#{secret}
+    </update>
+
+    <select id="selectByMno" parameterType="int" resultType="MemoVO">
+        selct * from memo where mno=#{mno}
+    </select>
+
+    <select id="selectAll" resultType="MemoVO">
+        select * from memo
+    </select>
+</mapper>
