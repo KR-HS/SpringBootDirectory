@@ -21,6 +21,7 @@ public class PageVO {
     private Criteria cri; // 페이지 기준객체
     private List<Integer> pageList; // 페이지번호 리스트(타임리프에서 향상된 for문)
 
+    private int pageCount = 5; // 페이지 수
     // 생성될 때 cri객체와, 전체게시글 수 필요
     public PageVO(Criteria cri,int total){
         this.cri=cri;
@@ -29,11 +30,11 @@ public class PageVO {
         // 끝페이지
         // 현재 조회하는 페이지 11-> 끝페이지 20번
         // 현재 조회하는 페이지 5 -> 끝페이지 10번
-        this.end = (int)(Math.ceil(this.page/10.0))*10;
+        this.end = (int)(Math.ceil(this.page/(double)this.pageCount))*pageCount;
 
         // 페이지 시작번호 게산
         // 끝페이지 - 페이지네이션 개수 + 1
-        this.start = this.end-10+1;
+        this.start = this.end-pageCount+1;
 
         // 실제 끝번호
         // 데이터가 53개라면 -> 실제 마지막 페이지 번호는 6
@@ -49,7 +50,7 @@ public class PageVO {
             this.end=this.realEnd;
         }
 
-        this.prev=this.start>10;
+        this.prev=this.start>pageCount;
         this.next=this.end<this.realEnd;
 
         // 페이지 리스트 초기화

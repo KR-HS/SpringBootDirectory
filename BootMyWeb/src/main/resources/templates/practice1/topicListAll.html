@@ -91,43 +91,36 @@
 												<th>등록일</th>
 											</tr>
 												
-											<tr>
-												<td>1</td>
-												<td>admin</td>
-												<td>오늘은 해가뜨려나?</td>
+											<tr th:each="vo,status:${list}">
+												<td>[[${(pageVO.page - 1)*10 + status.count}]]</td>
+												<td>[[${vo.topicWriter}]]</td>
+												<td>[[${vo.topicContent}]]]]</td>
 												<td>
-													<a title="상세보기(클릭)" href="#">오늘은 비가오려나?</a>
+													<a title="상세보기(클릭)" th:href="@{/topic/topicDetail(topicId=${vo.topicId})}">[[${vo.topicComment}]]</a>
 												</td>
-												<td>2016-01-01</td>
-											</tr>
-
-                                            <tr>
-												<td>1</td>
-												<td>coding404</td>
-												<td>안녕하세요!</td>
-												<td>
-													<a title="상세보기(클릭)" href="#">오늘은 해가뜬데요.</a>
-												</td>
-												<td>2016-01-01</td>
+												<td>[[${vo.topicRegdate}]]</td>
 											</tr>
 										</table>
 
 
 										<div class="page">
 											<ul>
-												<li><a href="#"><i class="fa fa-angle-double-left"
-															aria-hidden="true"></i></a></li>
-												<li style="margin-right:5px;"><a href="#"><i class="fa fa-angle-left"
-															aria-hidden="true"></i></a></li>
-												<li class="on"><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li style="margin-left:5px;"><a href="#"><i class="fa fa-angle-right"
-															aria-hidden="true"></i></a></li>
-												<li><a href="#"><i class="fa fa-angle-double-right"
-															aria-hidden="true"></i></a></li>
+												<th:block th:if="${pageVO.prev}">
+													<li><a th:href="@{/topic/topicListAll(page=1,amount=${pageVO.cri.amount})}"><i class="fa fa-angle-double-left"
+																																	aria-hidden="true"></i></a></li>
+													<li style="margin-right:5px;"><a th:href="@{/topic/topicListAll(page=${pageVO.start - 1},amount=${pageVO.cri.amount})}"><i class="fa fa-angle-left"
+																																												aria-hidden="true"></i></a></li>
+												</th:block>
+												<th:block th:each="page:${pageVO.pageList}">
+													<li th:class="${page==pageVO.page?'on':''}"><a th:href="@{/topic/topicListAll(page=${page},amount=${pageVO.cri.amount})}">[[${page}]]</a></li>
+												</th:block>
+												<th:block th:if="${pageVO.next}">
+													<li style="margin-left:5px;"><a th:href="@{/topic/topicListAll(page=${pageVO.end+1},amount=${pageVO.cri.amount})}"><i class="fa fa-angle-right"
+																																										   aria-hidden="true"></i></a></li>
+													<li ><a th:href="@{/topic/topicListAll(page=${pageVO.realEnd},amount=${pageVO.cri.amount})}">
+														<i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+													</li>
+												</th:block>
 											</ul>
 										</div>
 									</li>
