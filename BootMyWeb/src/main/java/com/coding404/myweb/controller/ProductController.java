@@ -44,11 +44,11 @@ public class ProductController {
     public String productList(Model model, Criteria ct){
         List<ProductVO> list = productService.getList("admin",ct);
         log.info(list.toString());
-        int total = productService.getTotal("admin");
-        PageVO pageVo = new PageVO(ct,total);
+        int total = productService.getTotal("admin",ct);
+        PageVO pageVO = new PageVO(ct,total);
 
         model.addAttribute("list",list);
-        model.addAttribute("pageVo",pageVo);
+        model.addAttribute("pageVO",pageVO);
         return "product/productList";
     }
 

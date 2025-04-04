@@ -11,7 +11,7 @@ import java.util.List;
 public interface ProductMapper {
     boolean productRegist(ProductVO vo);
     List<ProductVO> getList(@Param("prodWriter") String prodWriter,@Param("cri") Criteria cri);
-    int getTotal(String prodWriter);
+    int getTotal(@Param("prodWriter") String prodWriter,@Param("cri") Criteria cri);
 
     ProductVO getDetail(int prodId);
     boolean productUpdate(ProductVO vo);

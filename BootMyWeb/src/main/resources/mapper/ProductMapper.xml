@@ -15,14 +15,63 @@
                #{prodDiscount},#{prodPurchaseYn},#{prodContent},#{prodComment})
     </insert>
 
+    <!--
+    동적쿼리구문
+    if, choose, foreach
+    test에는 getter명이 들어감
+     -->
+
     <select id="getList" resultType="ProductVO">
-        select * from PRODUCT where prod_writer=#{prodWriter}
-        order by prod_id desc
+        select * from PRODUCT
+        where prod_writer=#{prodWriter}
+        <if test="cri.searchName != '' and cri.searchName != null">
+            and prod_name like concat('%',#{cri.searchName},'%')
+        </if>
+        <if test="cri.searchContent != '' and cri.searchContent != null">
+            and prod_content like concat('%',#{cri.searchContent},'%')
+        </if>
+        <if test="cri.startDate != '' and cri.startDate != null">
+          <![CDATA[
+          and str_to_date(prod_enddate,'%Y-%m-%d') >= str_to_date(#{cri.startDate},'%Y-%m-%d')
+          ]]>
+        </if>
+        <if test="cri.endDate != '' and cri.endDate != null">
+          <![CDATA[
+          and str_to_date(prod_enddate,'%Y-%m-%d') <= str_to_date(#{cri.endDate},'%Y-%m-%d')
+          ]]>
+        </if>
+        order by
+        <if test="cri.orderPrice =='asc'">
+            prod_price asc ,
+        </if>
+        <if test="cri.orderPrice =='desc'">
+            prod_price desc ,
+        </if>
+        prod_id desc
         limit #{cri.pageStart},#{cri.amount}
+
     </select>
 
     <select id="getTotal" resultType="int">
-        select count(*) as total from PRODUCT where prod_writer=#{prodWriter}
+        select count(*) as total
+        from PRODUCT
+        where prod_writer=#{prodWriter}
+        <if test="cri.searchName != '' and cri.searchName != null">
+            and prod_name like concat('%',#{cri.searchName},'%')
+        </if>
+        <if test="cri.searchContent != '' and cri.searchContent != null">
+            and prod_content like concat('%',#{cri.searchContent},'%')
+        </if>
+        <if test="cri.startDate != '' and cri.startDate != null">
+            <![CDATA[
+          and str_to_date(prod_enddate,'%Y-%m-%d') >= str_to_date(#{cri.startDate},'%Y-%m-%d')
+          ]]>
+        </if>
+        <if test="cri.endDate != '' and cri.endDate != null">
+            <![CDATA[
+          and str_to_date(prod_enddate,'%Y-%m-%d') <= str_to_date(#{cri.endDate},'%Y-%m-%d')
+          ]]>
+        </if>
     </select>
     <select id="getDetail" resultType="ProductVO" parameterType="int">
         select * from PRODUCT where prod_id = #{prodId}

@@ -29,26 +29,30 @@
 				<div class="midiaq">
 					<div class="page_title">관리자검색</div>
 
-					<form name="###########" action="############" method="get" >
+					<form name="searchForm" action="productList" method="get" >
 					<div class="search_block flfull">
-
+						<!--
+							화면에 보여질 필요는 없고, 넘겨야 하는 데이터는 hidden에 숨겨 보냄
+						-->
+						<input type="hidden" name="page" value="1">
+						<input type="hidden" name="amount" th:value="${pageVO.cri.amount}">
 						<div class="fl">
 							<div>
 								<span class="search_th">상품이름 검색</span>
-								<input type="text" class="" placeholder="상품 검색">
+								<input type="text" name="searchName" class="" placeholder="상품 검색" th:value="${pageVO.cri.searchName!=null?pageVO.cri.searchName:'' }">
 							</div>
 							
 							<div>
 								<span class="search_th">상품내용 검색</span>
-								<input type="text" class="" placeholder="상품 검색">
+								<input type="text" name="searchContent" class="" placeholder="상품 검색" th:value="${pageVO.cri.searchContent!=null?pageVO.cri.searchContent:'' }">
 							</div>
 							
 							<div>
 								<span class="search_th">판매가 정렬</span>
-								<select class="" name="">
-									<option value="">정렬방식</option>
-									<option value="">낮은순</option>
-									<option value="">높은순</option>
+								<select class="" name="orderPrice" id="orderPrice">
+									<option value="none">정렬방식</option>
+									<option value="asc" th:selected="${pageVO.cri.orderPrice=='asc'}">낮은순</option>
+									<option value="desc" th:selected="${pageVO.cri.orderPrice=='desc'}">높은순</option>
 								</select>
 							</div>
 
@@ -56,8 +60,8 @@
 							<div class="pdt15"></div>
 							<div>
 								<span class="search_th">판매마감일</span>
-								<input type="text" class="datepicker" readonly placeholder="날짜선택" /> -
-								<input type="text" class="datepicker" readonly placeholder="날짜선택" />
+								<input type="text" class="datepicker" name="startDate" th:value="${pageVO.cri.startDate!=null?pageVO.cri.startDate:'' }" readonly placeholder="날짜선택" /> -
+								<input type="text" class="datepicker" name="endDate" th:value="${pageVO.cri.endDate!=null?pageVO.cri.endDate:'' }" readonly placeholder="날짜선택" />
 							</div>
 							<!-- 
 							<div>
@@ -70,7 +74,7 @@
 
 						<div class="fr">
 							<div class="search_btn_area">
-								<a href="#" class="normal_btn purplebtn">검색</a>
+								<a href="#" id="searchBtn" class="normal_btn purplebtn">검색</a>
 								<a href="#" class="normal_btn purplebtn02">등록</a>
 							</div>
 						</div>
@@ -81,11 +85,11 @@
 							<li class="collum_tit">
 								<h2>상품 관리</h2>
 
-								<select class="">
-									<option value="10">10개 보기</option>
-									<option value="20">20개 보기</option>
-									<option value="40">40개 보기</option>
-									<option value="80">80개 보기</option>
+								<select class="" id="handleAmount">
+									<option value="10" th:selected="${pageVO.cri.amount==10}">10개 보기</option>
+									<option value="20" th:selected="${pageVO.cri.amount==20}">20개 보기</option>
+									<option value="40" th:selected="${pageVO.cri.amount==40}">40개 보기</option>
+									<option value="80" th:selected="${pageVO.cri.amount==80}">80개 보기</option>
 								</select>
 								<span class="showtoggle minus"></span>
 								<ul>
@@ -130,7 +134,7 @@
 
 <!--											</tr>-->
 											<tr th:each="vo,status : ${list}">
-												<td>[[${status.count + (pageVo.page-1) * pageVo.cri.amount}]]</td>
+												<td>[[${status.count + (pageVO.page-1) * pageVO.cri.amount}]]</td>
 												<td>
 													<a href="#" class="normal_btn">정보수정</a>
 													<a href="#" class="normal_btn modalOn">이미지수정</a>
@@ -158,24 +162,7 @@
 
 
 										<div class="page">
-											<ul>
-												<th:block th:if="${pageVo.prev}">
-												<li><a th:href="@{/product/productList(page=1,amount=${pageVo.cri.amount})}"><i class="fa fa-angle-double-left"
-															aria-hidden="true"></i></a></li>
-												<li style="margin-right:5px;"><a th:href="@{/product/productList(page=${pageVo.start - 1},amount=${pageVo.cri.amount})}"><i class="fa fa-angle-left"
-															aria-hidden="true"></i></a></li>
-												</th:block>
-												<th:block th:each="page:${pageVo.pageList}">
-													<li th:class="${page==pageVo.page?'on':''}"><a th:href="@{/product/productList(page=${page},amount=${pageVo.cri.amount})}">[[${page}]]</a></li>
-												</th:block>
-												<th:block th:if="${pageVo.next}">
-												<li style="margin-left:5px;"><a th:href="@{/product/productList(page=${pageVo.end+1},amount=${pageVo.cri.amount})}"><i class="fa fa-angle-right"
-															aria-hidden="true"></i></a></li>
-												<li ><a th:href="@{/product/productList(page=${pageVo.realEnd},amount=${pageVo.cri.amount})}">
-													<i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
-												</li>
-												</th:block>
-											</ul>
+											<th:block th:replace="~{./include/page :: page(${pageVO})}"></th:block>
 										</div>
 									</li>
 
@@ -261,6 +248,28 @@
 <script th:inline="javascript">
 	var msg = JSON.parse('[[${msg}]]');
 	if(msg!=null) alert(msg);
+
+	var handleAmount = document.getElementById('handleAmount');
+
+	handleAmount.onchange=function(){
+		var amount = event.target.value;
+		// 검색 폼에 amount를 셋팅하고, 폼을 서브밋하도록 처리
+		document.searchForm.amount.value = amount;
+		document.searchForm.submit();
+		//location.href="productList?page=1&amount="+amount;
+
+	}
+	var orderPirce = document.getElementById("orderPrice");
+	orderPirce.onchange=function(){
+		document.searchForm.submit();
+	}
+	// 검색버튼 JS
+	var searchBtn = document.getElementById("searchBtn")
+	searchBtn.onclick=function(){
+		event.preventDefault();
+		document.searchForm.submit(); // 폼 서브밋
+	}
+
 </script>
 </body>
 

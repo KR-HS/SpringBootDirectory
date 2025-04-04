@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductService {
     boolean productRegist(ProductVO vo);
     List<ProductVO> getList(String prodWriter, Criteria cri);
-    int getTotal(String prodWriter);
+    int getTotal(String prodWriter,Criteria cri);
 
     ProductVO getDetail(int prodId);
     boolean productUpdate(ProductVO vo);
