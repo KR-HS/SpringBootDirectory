@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
+@CrossOrigin("*")
 @Slf4j
 @RestController // 일반 컨트롤러와는 다른의미 - return에 담기는 데이터가 요청한 곳으로 응답함
 public class RestBasicController {
@@ -143,6 +143,8 @@ public class RestBasicController {
     서버 응답 데이터 SimpleVO
     responseEntity로 응답
      */
+    //@CrossOrigin("http://127.0.0.1:5500")
+    //@CrossOrigin({"첫번째 주소","두번째 주소"})
     @GetMapping("api/v1/getData")
     public ResponseEntity<SimpleVO> getData(@RequestParam("num")int num,
                                             @RequestParam("name")String name) {

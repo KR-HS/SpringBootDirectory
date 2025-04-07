@@ -6,5 +6,83 @@
 </head>
 <body>
     타임리프로 보여진 화면
+
+<button type="button" id="getData">get방식</button>
+<button type="button" id="getJson">post방식</button>
+
+
+
+<button type="button" id="apiGet">실습 api/v1/getData</button>
+<button type="button" id="apiInfo">실습 api/v1/getInfo</button>
+
+<script>
+    var getData = document.getElementById("getData");
+    getData.onclick=function(){
+        //fetch("/getData?name=이순신&sno=10")
+        fetch("/getData3/홍길자/20")
+            .then(function(response){
+                return response.text();
+            })
+            .then(function(data){
+                console.log(data);
+            })
+    }
+
+</script>
+
+<script>
+    var getJson = document.getElementById("getJson");
+    getJson.onclick=function(){
+
+        fetch("/getJson",{
+            method:"post",
+            headers:{
+                "Content-Type":"application/json" // JSON형식
+            },
+            body:JSON.stringify({
+                name:'홍길동',
+                age:20
+            })
+        })
+        .then(function(response){
+            return response.text(); // json()
+        })
+        .then(function(data){
+            console.log(data);
+        })
+    }
+</script>
+
+<script>
+    var apiGet = document.getElementById("apiGet");
+    var apiInfo = document.getElementById("apiInfo");
+
+    apiGet.onclick=function(){
+        fetch("api/v1/getData?num=10&name=홍길동")
+        .then(function(response){
+            return response.json();
+        }).then(function(data){
+            console.log(data);
+        })
+    }
+
+    apiInfo.onclick=function(){
+        fetch("api/v1/getInfo",{
+            method : "post",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                num : 10,
+                name : '홍길동'
+            })
+        }).then(function(response){
+            return response.json();
+        }).then(function(data){
+            console.log(data);
+        })
+    }
+
+</script>
 </body>
 </html>
