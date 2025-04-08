@@ -1,5 +1,6 @@
 package com.coding404.myweb.product.service;
 
+import com.coding404.myweb.command.CategoryVO;
 import com.coding404.myweb.command.ProductVO;
 import com.coding404.myweb.product.mapper.ProductMapper;
 import com.coding404.myweb.util.Criteria;
@@ -43,5 +44,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean productDelete(int prodId) {
         return productMapper.productDelete(prodId);
+    }
+
+    @Override
+    public List<CategoryVO> getCategory() {
+        return productMapper.getCategory();
+    }
+
+    @Override
+    public List<CategoryVO> getCategorySub(CategoryVO vo) {
+        return productMapper.getCategorySub(vo);
     }
 }

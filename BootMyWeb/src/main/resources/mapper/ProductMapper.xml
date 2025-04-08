@@ -79,7 +79,7 @@
 
     <update id="productUpdate" parameterType="ProductVO">
         update PRODUCT set prod_enddate=#{prodEnddate},prod_name=#{prodName},
-                           prod_price=#{prodPrice},prod_count=#{prodCount},
+                              prod_price=#{prodPrice},prod_count=#{prodCount},
                            prod_discount=#{prodDiscount},prod_purchase_yn=#{prodPurchaseYn},
                            prod_content=#{prodContent},prod_comment=#{prodComment}
     </update>
@@ -87,5 +87,14 @@
         delete from PRODUCT where prod_id = #{prodId}
     </update>
 
+    <select id="getCategory" resultType="CategoryVO">
+        select * from PRODUCT_CATEGORY
+                 where category_lv=1
+    </select>
+
+    <select id="getCategorySub" resultType="CategoryVO" parameterType="CategoryVO">
+        select * from PRODUCT_CATEGORY
+                 where group_id=#{groupId} and category_parent_lv=#{categoryLv} and category_detail_parent_lv=#{categoryDetailLv}
+    </select>
 
 </mapper>

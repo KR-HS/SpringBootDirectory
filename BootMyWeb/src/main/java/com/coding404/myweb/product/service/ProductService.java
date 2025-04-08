@@ -1,5 +1,6 @@
 package com.coding404.myweb.product.service;
 
+import com.coding404.myweb.command.CategoryVO;
 import com.coding404.myweb.command.ProductVO;
 import com.coding404.myweb.util.Criteria;
 
@@ -13,4 +14,10 @@ public interface ProductService {
     ProductVO getDetail(int prodId);
     boolean productUpdate(ProductVO vo);
     boolean productDelete(int prodId);
+
+
+
+    List<CategoryVO> getCategory(); // 1단 select(대분류)
+    List<CategoryVO> getCategorySub(CategoryVO vo); // 2단,3단 소분류
+
 }
