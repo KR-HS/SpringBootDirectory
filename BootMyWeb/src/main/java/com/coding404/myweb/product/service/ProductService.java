@@ -3,11 +3,12 @@ package com.coding404.myweb.product.service;
 import com.coding404.myweb.command.CategoryVO;
 import com.coding404.myweb.command.ProductVO;
 import com.coding404.myweb.util.Criteria;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ProductService {
-    boolean productRegist(ProductVO vo);
+    boolean productRegist(ProductVO vo, List<MultipartFile> files);
     List<ProductVO> getList(String prodWriter, Criteria cri);
     int getTotal(String prodWriter,Criteria cri);
 

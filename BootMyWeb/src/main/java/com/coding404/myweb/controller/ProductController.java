@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,19 +17,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
+
+
     @Autowired
     @Qualifier("productService")
     private ProductService productService;
+
 
 
     //화면처리
@@ -66,10 +75,26 @@ public class ProductController {
     }
 
     @PostMapping("/registForm")
-    public String registForm(ProductVO vo, RedirectAttributes ra) {
+    public String registForm(ProductVO vo, RedirectAttributes ra, @RequestParam("file") List<MultipartFile> list) {
 
-        log.info(vo.toString());
-        boolean result = productService.productRegist(vo);
+        // 1. 리스트안에 multipartfile의 값이 비었으면 제거
+        list = list.stream().filter(f-> !f.isEmpty()).collect(Collectors.toList());
+
+
+        // 2. 이미지 타입인지 검사
+        for(MultipartFile file : list){
+            if(file.getContentType().contains("image")== false){ // 이미지가 아니면
+                ra.addFlashAttribute("msg","이미지만 업로드가 가능합니다.");
+                return "redirect:/product/productList";
+            }
+        }
+
+
+
+
+        log.info(list.toString());
+
+        boolean result = productService.productRegist(vo,list);
 
         if (result) {
             ra.addFlashAttribute("msg","정상 등록 되었습니다.");

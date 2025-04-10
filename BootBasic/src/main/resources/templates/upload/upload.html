@@ -12,8 +12,66 @@
     <p>단일파일 업로드</p>
     <form action="upload_ok" method="post" enctype="multipart/form-data">
         파일선택 :<input type="file" name="file"><br>
-        <input type="submit" value="전송"><br>
+        <input type="submit" value="단일업로드"><br>
 
     </form>
+
+
+    <p>멀티플 속성을 이용해서 여러파일 업로드</p>
+    <form action="upload_ok2" method="post" enctype="multipart/form-data">
+        파일선택 :<input type="file" name="file" multiple><br>
+        <input type="submit" value="복수선택업로드"><br>
+    </form>
+
+    <p>동일한 이름의 복수태그를 이용해서 여러파일 업로드</p>
+    <form action="upload_ok3" method="post" enctype="multipart/form-data">
+        파일선택 :<input type="file" name="file"><br>
+        파일선택 :<input type="file" name="file"><br>
+        파일선택 :<input type="file" name="file"><br>
+        파일선택 :<input type="file" name="file"><br>
+        <input type="submit" value="복수선택업로드"><br>
+    </form>
+
+    <!--  제이쿼리 링크  -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    작성자 : <input type="text" name="writer">
+    파일선택 : <input type="file" name="file_a">
+    <button type="button" id="btn">비동기업로드</button>
+
+
+    <script>
+        // 사용자가 버튼을 클릭하면, file_a의 데이터를 얻고, writer를 얻음
+        // 폼객체를 생성하고, ajax로 요청
+
+        $("#btn").click(function(){
+            var writer = $("input[name=writer]").val();
+            var fileTag = $("input[name=file_a]")[0];
+
+            // 기본적인 유효성검사..
+
+            // js폼객체생성
+            var formData = new FormData();
+            formData.append("writer",writer);
+            formData.append("file",fileTag.files[0]);
+
+            $.ajax({
+                url:"upload_ok4",
+                data:formData,
+                processData : false, // 폼타입이 &name=value 형태로 자동변경되는것을 방지
+                contentType:false, // ajax방식에서는 contentType을 false, 적지 않으면
+                type:"post",
+                success:function(result){
+
+                },
+                error : function(err,status){
+                    console.log(err,status);
+                }
+            })
+
+
+            console.log(fileTag.files);
+            // console.log(file);
+        })
+    </script>
 </body>
 </html>

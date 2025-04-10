@@ -5,7 +5,11 @@
 
 <mapper namespace="com.coding404.myweb.product.mapper.ProductMapper">
 
-    <insert id="productRegist" parameterType="ProductVO">
+
+    <!--
+        insert 이후에 prodId컬럼에 인서트한 키값을 저장해줌
+    -->
+    <insert id="productRegist" parameterType="ProductVO" useGeneratedKeys="true" keyProperty="prodId">
         insert into PRODUCT(prod_enddate,prod_category,prod_writer
                            ,prod_name,prod_price,prod_count
                            ,prod_discount,prod_purchase_yn,
@@ -124,4 +128,15 @@
                  where group_id=#{groupId} and category_parent_lv=#{categoryLv} and category_detail_parent_lv=#{categoryDetailLv}
     </select>
 
+    <!--  업로드 파일 인서트  -->
+    <insert id="productRegistFile" parameterType="ProductUploadVO">
+        insert into PRODUCT_UPLOAD(filename,filepath,uuid,prod_id,prod_writer)
+        values(
+               #{filename},
+               #{filepath},
+               #{uuid},
+               #{prodId},
+               #{prodWriter}
+              )
+    </insert>
 </mapper>
