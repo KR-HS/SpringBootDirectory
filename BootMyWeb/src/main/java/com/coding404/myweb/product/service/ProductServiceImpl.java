@@ -113,4 +113,9 @@ public class ProductServiceImpl implements ProductService {
     public List<CategoryVO> getCategorySub(CategoryVO vo) {
         return productMapper.getCategorySub(vo);
     }
+
+    @Override
+    public List<ProductUploadVO> getDetailImg(String prodId) {
+        return productMapper.getDetailImg(prodId);
+    }
 }

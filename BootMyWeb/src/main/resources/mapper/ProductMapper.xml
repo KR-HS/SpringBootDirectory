@@ -139,4 +139,10 @@
                #{prodWriter}
               )
     </insert>
+
+    <!--파일 정보조회-->
+    <select id="getDetailImg" resultType="productUploadVO">
+        select * from PRODUCT_UPLOAD
+        where prod_id = #{prodId}
+    </select>
 </mapper>

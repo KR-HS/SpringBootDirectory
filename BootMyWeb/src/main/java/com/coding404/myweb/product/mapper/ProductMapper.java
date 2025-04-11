@@ -26,4 +26,6 @@ public interface ProductMapper {
     // 업로드 인서트
     boolean productRegistFile(ProductUploadVO vo);
 
+    //파일정보조회
+    List<ProductUploadVO> getDetailImg(String prodId);
 }
