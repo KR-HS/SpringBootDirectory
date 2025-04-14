@@ -5,6 +5,9 @@ import com.example.jpa.repository.MemoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,5 +50,18 @@ public class JPAQueryMethod03 {
         List<Memo> list = memoRepository.findByTextContainingOrWriterContainingOrderByMnoDesc("sample5","admin1");
 
         System.out.println(list.toString());
+    }
+
+
+    @Test
+    public void test06(){
+        Pageable pageable = PageRequest.of(0, 10);
+
+        String a = "%5%";
+        String b = "%6%";
+        Page<Memo> page = memoRepository.findByTextLikeOrWriterLike(a,b,pageable);
+
+        System.out.println(page.getContent().toString());
+        System.out.println(page.getTotalElements());
     }
 }
