@@ -23,4 +23,9 @@ public class Memo {
     private String writer;
     @Column(columnDefinition = "varchar(200) default 'y'")
     private String text;
+
+    // ManyToOne - 멤버를 선언
+    @ManyToOne
+    @JoinColumn(name="member_id") // 멤버 테이블의 id를 내 테이블의 member_id컬럼이랑 연결함
+    private Member member;
 }
