@@ -1,5 +1,6 @@
 package com.example.jpa.repository;
 
+import com.example.jpa.entity.MemberMemoDTO;
 import com.example.jpa.entity.Memo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,4 +75,11 @@ public interface MemoRepository extends JpaRepository<Memo, Long>,
     // 네이티브쿼리 - jpql이 아닌 sql문을 직접 날리는 방법
     @Query(value = "select * from memo where mno = ?",nativeQuery = true)
     Memo getNative(Long a);
+
+    //jpql로 조인
+//    @Query("select m from Memo m inner join m.member x where m.mno >= :mno")
+//    List<Memo> mtoJoin2(@Param("mno") long mno);
+
+//    @Query("select m from Member m left join m.list x where x.text like %?%")
+//    List<MemberMemoDTO> getList2(String text);
 }
