@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
             UUID uuid = UUID.randomUUID(); // 16진수형태의 랜덤문자열을 반환
             String filepath = makeFolder();
 
-            String path = uploadPath +"/"+ filepath + "/" +uuid + "_" + filename ; // 업로드패스
+            String path = uploadPath +"/"+ filepath + "/" +uuid + "_" + filename ; // 업로    드패스
 
             try {
 
